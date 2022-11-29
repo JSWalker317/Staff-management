@@ -28,8 +28,7 @@ return new class extends Migration
             $table->tinyInteger('order_status');
             $table->string('note_customer',255)->nullable();
             $table->string('error_code_api',20)->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
 
             $table->foreign('customer_id')->references('customer_id')->on('mst_customer');
         });

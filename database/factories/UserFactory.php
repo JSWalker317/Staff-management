@@ -20,9 +20,12 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'verify_email' => fake()->sentence($this->faker->biasedNumberBetween(4, 6)),
+            'is_active' => fake()->numberBetween(0,1),
+            'is_delete' => fake()->numberBetween(0,1),
+            'group_role' => fake()->name(),
         ];
     }
 

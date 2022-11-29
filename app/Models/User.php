@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    protected $table = 'mst_users';
+    // default id
+    protected $primaryKey = 'id';
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +25,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'verify_email',
+        'is_active',
+        'is_delete',
+        'group_role',
+        'last_login_ip',
     ];
 
     /**
@@ -39,6 +48,6 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
     ];
 }

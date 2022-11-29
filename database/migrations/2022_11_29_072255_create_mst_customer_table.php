@@ -20,8 +20,7 @@ return new class extends Migration
             $table->string('tel_num', 14);
             $table->string('address',255);
             $table->tinyInteger('is_active')->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
         });
     }
 

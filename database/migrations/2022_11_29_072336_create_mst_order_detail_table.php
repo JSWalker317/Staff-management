@@ -24,8 +24,7 @@ return new class extends Migration
             $table->tinyInteger('shop_id')->unsigned();
 
             $table->integer('receiver_id');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
 
             $table->foreign('order_id')->references('order_id')->on('mst_order');
             $table->foreign('product_id')->references('product_id')->on('mst_product');
