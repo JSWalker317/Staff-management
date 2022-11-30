@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\OrderDetail;
 
 class Shop extends Model
 {
@@ -20,4 +21,10 @@ class Shop extends Model
     protected $fillable = [
         'shop_name',
     ];
+
+
+
+    public function orderDetails(){
+        return $this->hasMany(OrderDetail::class, 'product_id', 'product_id');
+    }
 }

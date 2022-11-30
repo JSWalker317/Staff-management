@@ -17,6 +17,8 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $group = ['Admin', 'Editer', 'Reviewer'];
+     
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -25,7 +27,7 @@ class UserFactory extends Factory
             'verify_email' => fake()->sentence($this->faker->biasedNumberBetween(4, 6)),
             'is_active' => fake()->numberBetween(0,1),
             'is_delete' => fake()->numberBetween(0,1),
-            'group_role' => fake()->name(),
+            'group_role' => fake()->randomElement($group),
         ];
     }
 

@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\OrderDetail;
 
 class Product extends Model
 {
@@ -25,5 +26,9 @@ class Product extends Model
         'is_sales',
         'is_sales',
     ];
+
+    public function orderDetails(){
+        return $this->hasMany(OrderDetail::class, 'product_id', 'product_id');
+    }
 
 }

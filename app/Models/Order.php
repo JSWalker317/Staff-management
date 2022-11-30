@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Customer;
+use App\Models\OrderDetail;
 
 class Order extends Model
 {
@@ -31,4 +33,12 @@ class Order extends Model
         'note_customer',
         'error_code_api',
     ];
+
+    public function customer(){
+        return $this->hasOne(Customer::class, 'customer_id', 'customer_id');
+    }
+
+    public function orderDetails(){
+        return $this->hasMany(OrderDetail::class, 'product_id', 'product_id');
+    }
 }
