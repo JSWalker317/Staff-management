@@ -2,29 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Throwable;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Http\Requests\UserRequest;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
 
-
-
-class UserController extends Controller
+class ProductController extends Controller
 {
-      /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('pages.user');
+        return view('pages.product');
+
     }
 
     /**
@@ -92,5 +82,4 @@ class UserController extends Controller
     {
         //
     }
- 
 }

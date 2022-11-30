@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,20 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> 'required|string',
-            'email' => 'required|string|unique:mst_users,email|email',
+            'email' => 'required|email',
             'password' => 'required|string',
-            'verify_email' => 'required|string',
-            'group_role' => 'required|string',
-            
+        ];
+    }
+
+      /**
+     * customize msg error
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'email.required' => 'Vui lòng nhập email',
+            'password.required' => 'Vui lòng nhập password'
         ];
     }
 }

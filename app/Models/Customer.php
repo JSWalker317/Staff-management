@@ -24,4 +24,12 @@ class Customer extends Model
         'address',
         'is_active',
     ];
+
+
+
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id', 'customer_id');
+    }
 }
