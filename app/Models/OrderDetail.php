@@ -30,12 +30,12 @@ class OrderDetail extends Model
     ];
 
     public function shop(){
-        return $this->hasOne(Shop::class, 'shop_id', 'shop_id');
+        return $this->belongsTo(Shop::class, 'shop_id', 'shop_id');
     }
     public function product(){
-        return $this->hasOne(Customer::class, 'product_id', 'product_id');
+        return $this->belongsTo(Customer::class, 'product_id', 'product_id');
     }
     public function order(){
-        return $this->hasOne(Order::class, 'order_id', 'order_id');
+        return $this->belongsTo(Order::class, 'order_id', 'order_id');
     }
 }

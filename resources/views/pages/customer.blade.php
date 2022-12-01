@@ -1,5 +1,5 @@
 @extends('base')
 
 @section('content')
-    <h1>Customer</h1>
+    <h3>Customer</h3>
 @endsection

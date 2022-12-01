@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id',10);	
             $table->string('name', 255);
             $table->string('email',255)->unique();
-            $table->string('password', 255);
+            $table->string('password', 255)->default('$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
             $table->rememberToken('remember_token', 100)->nullable();
             $table->string('verify_email', 100)->nullable();
             $table->tinyInteger('is_active')->default(1)->comment('0: Không hoạt động , 1 : Hoạt động');

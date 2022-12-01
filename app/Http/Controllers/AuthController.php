@@ -6,7 +6,7 @@ use Throwable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +25,7 @@ class AuthController extends Controller
         return User::all();
     }
 // register errorr Table 'laravel.user' doesn't exist
-    public function register(UserRequest $request){
+    public function register(RegisterRequest $request){
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
@@ -88,6 +88,9 @@ class AuthController extends Controller
                 $user->remember_token = $token;
             }
             $user->save();
+
+            $request->session()->put('login', true);
+            $request->session()->put('name', $user->name);
             // $response = [
             //     'user' => $user,
             // ];
@@ -109,6 +112,7 @@ class AuthController extends Controller
             //     'message' => 'Logged out success!!!',
             //     'status' => 204,
             // ]);
+            request()->session()->flush();
             return redirect()->route('getLogin');
             // return redirect('/login');
     }

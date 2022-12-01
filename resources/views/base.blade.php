@@ -13,9 +13,8 @@
 
 </head>
 <body>
-    
     @include('layouts.header')
-    <main class="py-5">
+    <main class="py-2">
         <div class="container">
             <div class="content">
                 @yield('content')
@@ -24,7 +23,7 @@
     </main>
     @include('layouts.footer')
     @stack('scripts')
-
+   
 
 </body>
 </html>

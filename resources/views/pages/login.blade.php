@@ -20,7 +20,7 @@
             @csrf
             <div class="input-group margin-bottom-sm">
                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                <input class="form-control" type="email" placeholder="Email" name="email">
+                <input class="form-control" type="text" placeholder="Email" name="email">
             </div>
             @if ($errors->has('email'))
                 <span class="text-danger"> {{ $errors->first('email') }}</span>
