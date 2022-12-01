@@ -27,6 +27,7 @@
                         <!-- <input type="text" class="form-control" id="inputGroup" placeholder="Chọn nhóm"> -->
                         <div class="input-group mb-3" >
                             <select class="form-select form-control" name="group_role" placeholder="Chọn nhóm">
+                                <option value=""></option>
                                 <option value="Admin">Admin</option>
                                 <option value="Editer">Editer</option>
                                 <option value="Reviewer">Reviewer</option>
@@ -38,6 +39,7 @@
                         <!-- <input type="text" class="form-control" id="inputStatus" placeholder="Chọn trạng thái"> -->
                         <div class="input-group mb-3" >
                             <select class="form-select form-control" name="is_active" placeholder="Chọn trạng thái">
+                                <option value=""></option>
                                 <option value="1">Đang hoạt động</option>
                                 <option value="0">Tạm khóa</option>
                             </select>
@@ -142,19 +144,31 @@
             console.log(id);
             $('#edit_id').val(id);             
 
-            // $.ajax({
-            //     type: "GET",
-            //     url: 
-            //     "http://localhost/user/"+id
-            //     ,
-            //     data: {
-            //         'id': id,
-            //     },
-            //     success: function (response) {
-            //         console.log(response);
+            $.ajax({
+                type: "GET",
+                url: 
+                "http://localhost/user/"+id
+                ,
+                data: {
+                    
+                },
+                success: function (response) {
+                    // console.log(response);
+                    $.each(response, function (key, value){
+                        // console.log(value['name']);
+                        $('#edit_name').val(value['name']);
+                        $('#edit_email').val(value['email']);
+                        $('#edit_group_role').val(value['group_role']);
+                        if (value['is_active'] == 0){
+                            $status = 'FALSE';
+                        }else{
+                            $status = 'TRUE';
+                        }
+                        $('#edit_status').val($status);
+                    });
         
-            //     }
-            // });
+                }
+            });
         });
         // jqclick
         $('.delete_btn').click(function (e) { 
@@ -270,7 +284,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Tên</label>
                         <div class="col-sm-9">
-                            <input type="text" name="name" id="edit_pName" class="form-control" placeholder="Nhập họ tên">
+                            <input type="text" name="name" id="edit_name" class="form-control" placeholder="Nhập họ tên">
                             @error('name')
                                 <span class="text-danger"> {{ $message }}</span>
                             @enderror
@@ -279,10 +293,10 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Email</label>
                         <div class="col-sm-9">
-                            <input type="text" name="email" id="edit_pCategory" class="form-control" placeholder="Email" readonly>
-                            @error('email')
+                            <input type="text" name="email" id="edit_email" class="form-control" placeholder="Email" readonly>
+                            <!-- @error('email')
                                 <span class="text-danger"> {{ $message }}</span>
-                            @enderror
+                            @enderror -->
                         </div>
                     </div>
                     <div class="form-group row">
@@ -309,7 +323,8 @@
                         <label for="" class="col-sm-3 col-form-label">Nhóm</label>
                         <div class="col-sm-9">
                             <div class="input-group" >
-                                <select class="form-select form-control" name="group_role" placeholder="Chọn nhóm">
+                                <select class="form-select form-control" name="group_role" id="edit_group_role" placeholder="Chọn nhóm">
+                                <option value=""></option>
                                     <option value="Admin">Admin</option>
                                     <option value="Editer">Editer</option>
                                     <option value="Reviewer">Reviewer</option>
@@ -320,7 +335,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Trạng thái</label>
                         <div class="col-sm-9 mt-2">
-                            TRUE
+                            <input type="text"  id="edit_status" class="form-control" readonly>
                         </div>
                     </div>
                 </div>

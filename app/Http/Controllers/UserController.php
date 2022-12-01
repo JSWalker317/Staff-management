@@ -95,10 +95,10 @@ class UserController extends Controller
         // dd($id);
         // return User::findOrFail($id)->get();
         $user = User::find($id);
-        return $user;
-        // return response()->json([
-        //     'data' => $this->orderRepository->getAllOrders()
-        // ]);
+       
+        return response()->json([
+            'user' => $user
+        ]);
     }
 
     /**
