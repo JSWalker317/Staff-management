@@ -7,16 +7,27 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\EditUserRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
+
+
 
 
 
 class UserController extends Controller
 {
+    
+    public function setStatus($id){
+        $user = User::findOrFail($id);
+        if ($user->is_active == 0){
+            $user->is_active = 1;
+        }else {
+            $user->is_active = 0;
+        }
+        $user->save();
+        return redirect('/user');
+    }
       /**
      * Display a listing of the resource.
      *
@@ -24,7 +35,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('pages.user');
+        $users = User::all();
+        return view('pages.user', compact('users'));
+       
     }
 
     /**
@@ -43,9 +56,32 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $user = new User();
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->password = Hash::make($request->get('password'));
+        $user->group_role = $request->get('group_role');
+        $user->save();
+
+        // $request->validated();
+        // $user = new User();
+        // $user->name = $request->name;
+        // $user->email = $request->email;
+        // $user->password = $request->password;
+        // $user->group_role = $request->group_role;
+        // $user->save();
+
+        // $response = [
+        //     'user' => $user,
+        //     // 'Bearer_token' => $token
+        // ];
+        // return response($response, 201);
+       
+        return redirect('/user')->with('success', 'Data added');
+
+
     }
 
     /**
@@ -56,18 +92,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        // dd($id);
+        // return User::findOrFail($id)->get();
+        $user = User::find($id);
+        return $user;
+        // return response()->json([
+        //     'data' => $this->orderRepository->getAllOrders()
+        // ]);
     }
 
     /**
@@ -77,9 +108,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function edit(EditUserRequest $request)
     {
-        //
+        $user = User::findOrFail(request()->id);
+        $user->name = $request->name;
+        $user->password = Hash::make($request->password);
+        $user->group_role = $request->group_role;
+        $user->save();
+        //  $response = [
+        //     'user' => $user,
+        //     // 'Bearer_token' => $token
+        // ];
+        // return response($response, 201);
+        return redirect('/user')->with('success', 'Data updated');
     }
 
     /**
@@ -88,9 +129,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        User::findOrFail(request()->id)->delete();
+        return redirect()->route('users')->with('success', 'Deleted');
+
     }
  
 }
