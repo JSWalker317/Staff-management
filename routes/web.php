@@ -17,27 +17,40 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-});
-// 
-Route::get('/login', [AuthController::class, 'getLogin'])->name('getLogin');
+// public
+Route::get('/login', [AuthController::class, 'getLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-// 
+// private
 Route::get('/', function () { return view('base'); });
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+   
+    // Route::get('/product', [ProductController::class, 'index'])->name('products');
+    // Route::get('/customer', [CustomerController::class, 'index'])->name('customers');
+
+});
+// 
+// Customer page
+Route::controller(CustomerController::class)->group(function() {
+    Route::get('customer', 'index')->name('customers');
+    Route::post('customer/postCustomer', 'postCustomer');
+    Route::get('customer/{customer_id}', 'show');
+
+
+});
+
+
 // Product page
 Route::get('/product', [ProductController::class, 'index'])->name('products');
+
 // User page
 Route::controller(UserController::class)->group(function() {
     Route::get('user', 'index')->name('users');
-    Route::post('user/store', 'store')->name('uStore');
-    Route::post('user/edit', 'edit');
-    Route::get('user/delete', 'destroy');
-    Route::get('user/{id}', 'show')->name('uShow');
-
+    Route::get('user/fetchData', 'fetchData');
+    Route::post('user/postUser', 'postUser');
+    Route::get('user/delete/{id}', 'delete');
+    Route::get('user/{id}', 'show');
     Route::get('user/status/{id}','setStatus')->name('setStatus');
-// Customer page
+
 });
-Route::get('/customer', [CustomerController::class, 'index'])->name('customers');

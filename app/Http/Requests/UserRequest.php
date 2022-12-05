@@ -24,8 +24,8 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> 'required|string',
-            'email' => 'required|string|unique:mst_users,email|email',
+            'name'=> 'required|string|min:5',
+            'email' => 'required|email|unique:mst_users,email,'.request()->id.',id',
             'password' => 'required|string|confirmed',
             'password_confirmation' =>'required',
             'group_role' => 'required|string',
@@ -41,11 +41,21 @@ class UserRequest extends FormRequest
     {
         return [
             'name.required' => 'Vui lòng nhập tên',
+            'name.min' => 'Tên phải lớn hơn 5 ký tự',
+
             'email.required' => 'Vui lòng nhập email',
             'email.unique' => 'Email đã đăng kí',
+            'email.email' => 'Vui lòng nhập đúng định dạng Email',
+
             'password.required' => 'Vui lòng nhập mật khẩu',
             'password.confirmed' => 'Xác thực mật khẩu không đúng',
             'password_confirmation.required' => 'Vui lòng xác thực mật khẩu',
         ];
+    }
+
+    public $validator = null;
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $this->validator = $validator;
     }
 }
