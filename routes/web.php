@@ -35,7 +35,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::controller(CustomerController::class)->group(function() {
     Route::get('customer', 'index')->name('customers');
     Route::get('customer/fetchData', 'fetchData');
+    Route::get('customer/export', 'export')->name('export');
+
+
     Route::post('customer/postCustomer', 'postCustomer');
+
+    // Route::get('/view-import-export','importExportView')->name('import-view');
+    Route::post('/import','import')->name('import');
+
     Route::get('customer/{customer_id}', 'show');
 
 

@@ -6,13 +6,14 @@ use App\Http\Requests\AddCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
+use App\Exports\CustomersExport;
+use App\Imports\CustomersImport;
+
+use Maatwebsite\Excel\Facades\Excel;
+
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
         $customers = Customer::orderBy('updated_at', 'DESC')->paginate(10);
@@ -24,7 +25,9 @@ class CustomerController extends Controller
         $customer_name = $request->customer_name;
         $email = $request->email;
         $is_active = $request->is_active;
-        $address =$request->address;
+        $address = $request->address;
+
+        
         
         $customers = Customer::orderBy('updated_at', 'DESC');
 
@@ -53,7 +56,59 @@ class CustomerController extends Controller
 
         return $customers;
     }
+    // 
+    public function import(Request $request) 
+    {
+        // Excel::import(new CustomersImport, $request->file('file_customer')->store('temp'));
+        $import = new CustomersImport();
+        $import->import($request->file('file_customer')->store('temp'));
 
+        $errors = [];
+        if($import->failures())
+        {
+            foreach ($import->failures() as $failure) 
+            {
+                $errors[] = [
+                    $failure->row(),
+                    $failure->attribute(),
+                    $failure->errors()
+                ];
+                // $failure->row(); // row that went wrong
+                // $failure->attribute(); // either heading key (if using heading row concern) or column index
+                // $failure->errors(); // Actual error messages from Laravel validator
+                // $failure->values(); // The values of the row that has failed.
+            }
+            return back()->with('error', $errors);
+
+        }else{
+            return back()->with('success', 'All good!');
+        }
+       
+        
+    }
+    public function export(Request $request) 
+    {
+        $customers = Customer::orderBy('updated_at', 'DESC');
+
+        $customers = $this->filterSearch($customers, $request->customer_name,
+        $request->email, $request->is_active, $request->address);
+        if( $request = null)
+        {
+            $customers = $customers->select('customer_name', 'email', 'tel_num', 'address')->get();
+        }else{
+            $customers = $customers->select('customer_name', 'email', 'tel_num', 'address')->take(10)->get();
+        }
+        return  Excel::download(new CustomersExport($customers), 'customers.xlsx');
+
+        // $response =  array(
+        //     'name' => "customers.xlsx",
+        //     'file' => "data:application/vnd.ms-excel;base64,".base64_encode($downfile)
+        //  );
+        // return response()->json($response);
+        // return Excel::download(new CustomersExport($customers), 'customers.xlsx');
+
+    }
+// 
     public function postCustomer(AddCustomerRequest $request){
         $error_arr = [];
         $success_add = '';

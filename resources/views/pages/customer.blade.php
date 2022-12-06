@@ -2,6 +2,24 @@
 
 @section('content')
     <h3>Customer</h3>
+
+    @if($message = Session::get('error'))
+        @foreach ($message as $value)
+            <div class="alert alert-warning message-alert" role="alert">
+                Lỗi dòng {{ $value[0] }} {{ $value[1] }}:  {{ $value[2][0] }} 
+            </div>
+        @endforeach
+    @endif
+
+    <!-- @if ($errors->has('email'))
+        <span class="text-danger"> {{ $errors->first('email') }}</span>
+    @endif -->
+
+    @if($message = Session::get('success'))
+        <div class="alert alert-success message-alert">
+            {{ $message }}
+        </div>
+    @endif
     <hr>
     <div class="container-fuild">
         <span id="form_output"></span>
@@ -39,14 +57,14 @@
                 
             </div>
             <div class="row mt-2 ">
-                <div class="col-md-6 mb-2">
+                <div class="col-lg-6 mb-2 col-md-7">
                     <button type="button" name='add' id="add_customer" class="btn btn-primary" data-toggle="modal" data-target="#addEditCustomer"><span class="fa fa-user-plus" aria-hidden="true"></span> Thêm mới</button>
-                    <button type="button" name='importCSV' id="import_CSV" class="btn btn-success" ><span class="fa fa-upload" aria-hidden="true"></span> Import CSV</button>
-                    <button type="button" name='exportCSV' id="import_CSV" class="btn btn-success" ><span class="fa fa-download" aria-hidden="true"></span> Export CSV</button>
+                    <button type="button" name='importCSV' id="import_CSV" class="btn btn-success" data-toggle="modal" data-target="#importExportCustomer"><span class="fa fa-upload" aria-hidden="true"></span> Import CSV</button>
+                    <button type="button" name='exportCSV' id="export_CSV" class="btn btn-success" ><span class="fa fa-download" aria-hidden="true"></span> Export CSV</button>
 
                 </div>
             
-                <div class=" col-md-6 d-flex justify-content-md-end mb-2">
+                <div class=" col-lg-6 col-md-5 d-flex justify-content-md-end mb-2">
                     <button type="submit" class="btn btn-primary mr-3"><span class="fa fa-search" aria-hidden="true"></span> Tìm kiếm</button>
                     <button type="button" id="cancelSearch" class="btn btn-danger"><span class="fa fa-times" aria-hidden="true"></span> Xóa tìm</button>
                
@@ -69,9 +87,9 @@
             <!-- {!! $customers->appends(Request::all())->links() !!} -->
             <!-- {!! $customers->appends(['sort' => 'votes'])->links() !!} -->
 
-            <!-- <div class="clearfix">
+            <div class="clearfix">
                 
-            </div> -->
+            </div>
     </div>
 
     <!-- table -->
@@ -89,18 +107,7 @@
                 </thead>
                 
                 <tbody id="customerList">
-                    <!-- @foreach($customers as $key => $value)
-                    <tr>
-                        <th class="customer_id">{{$value['customer_id']}}</th>
-                        <td>{{$value['customer_name']}}</td>
-                        <td>{{$value['email']}}</td>
-                        <td>{{$value['address']}}</td>
-                        <td>{{$value['tel_num']}}</td>
-                        <td>
-                            <a href="" class="mr-3 edit_btn" name='edit' id="edit_customer" title="Edit Customer" data-toggle="modal" data-target="#addEditCustomer"><span class="fa fa-pencil"></span></a>
-                       </td>
-                    </tr>
-                    @endforeach -->
+                   
                 </tbody>
             </table>
                   
@@ -180,11 +187,38 @@
         </div>
     </div>
     </div>
+    <!-- view import export -->
+    <div class="modal fade" id="importExportCustomer" tabindex="-1" aria-labelledby="fileModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fileModal">Import Excel Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- file submit nen multipart/form-data -->
+                <form action="{{ route('import') }}" id="importExportForm" method="POST" enctype="multipart/form-data">
+                    @csrf
 
+                    <div class="modal-body">
+                        <input type="file" name="file_customer" id="file_customer" class="form-control" accept=".xlsx,.xls,.csv" required>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Import Data</button>
+                        <!-- <a href="{{ route('export') }}" class="btn btn-warning" id="exportData">Export Data</a> -->
+                    </div>
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--  -->
 <script>
     // ajax run link not reload page
     // jqclick
-    var form_data;
+    var form_data ;
     function refresh_data()
     {
         // alert(1);
@@ -227,7 +261,7 @@
         $('#fetchDataForm').on('submit', function (e) {
             e.preventDefault();
             form_data = $(this).serialize();
-            // console.log(form_data);
+            console.log(form_data);
 
             refresh_data();
         });
@@ -298,12 +332,12 @@
         // submit form add
         $('#customer_form').on('submit', function (e) {
             e.preventDefault();
-            var form_data = $(this).serialize();
+            var form_data_add = $(this).serialize();
 
             $.ajax({
                 url: 'http://localhost/customer/postCustomer',
                 method: "POST",
-                data: form_data,
+                data: form_data_add,
                 dataType: "json",
                 success:function(respone){
                     // var err_arr = [respone.error];
@@ -358,10 +392,28 @@
                 }
             })
         });
-        
 
+        // $('#import_CSV').click(function (e) {
+        //     e.preventDefault();
+        //     $('#importExportForm')[0].reset();
+        //     $('#fileModal').html('Import Excel Customer');
+        //     // 
+        // });
+
+        $('#export_CSV').click(function (e) {
+            e.preventDefault();
+            console.log('ddd');
+            console.log(form_data);
+            var url =  'http://localhost/customer/export?'+form_data;
+            window.open(url, '_blank');
+        });
+
+        $(".message-alert").fadeTo(10000, 500).slideUp(500, function(){
+                $(".message-alert").slideUp(500);
+        });
+        
       
-    
+        
     });
 </script>
 @endsection
