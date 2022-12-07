@@ -6,7 +6,7 @@
     @if($message = Session::get('error'))
         @foreach ($message as $value)
             <div class="alert alert-warning message-alert" role="alert">
-                Lỗi dòng {{ $value[0] }} {{ $value[1] }}:  {{ $value[2][0] }} 
+                Lỗi dòng {{ $value[0] }} {{ $value[1] }}:  {{ $value[2][0] }}
             </div>
         @endforeach
     @endif
@@ -16,7 +16,7 @@
     @endif -->
 
     @if($message = Session::get('success'))
-        <div class="alert alert-success message-alert">
+        <div class="alert alert-success message-alert" role="alert">
             {{ $message }}
         </div>
     @endif

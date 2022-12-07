@@ -21,7 +21,7 @@ HeadingRowFormatter::default('none');
 
 
 class CustomersImport implements ToCollection
-    ,WithHeadingRow
+    , WithHeadingRow
     , WithValidation
     ,SkipsOnFailure
     ,SkipsEmptyRows

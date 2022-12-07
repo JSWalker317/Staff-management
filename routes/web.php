@@ -37,26 +37,28 @@ Route::controller(CustomerController::class)->group(function() {
     Route::get('customer/fetchData', 'fetchData');
     Route::get('customer/export', 'export')->name('export');
 
-
     Route::post('customer/postCustomer', 'postCustomer');
-
-    // Route::get('/view-import-export','importExportView')->name('import-view');
     Route::post('/import','import')->name('import');
-
     Route::get('customer/{customer_id}', 'show');
-
-
 });
 
-
 // Product page
-Route::get('/product', [ProductController::class, 'index'])->name('products');
+Route::controller(ProductController::class)->group(function() {
+    Route::get('product', 'index')->name('products');
+    Route::get('product/fetchData', 'fetchData');
+    Route::get('product/getViewPost', 'getViewPost');
+
+    Route::post('product/storeProduct', 'storeProduct')->name('storeProduct');
+    Route::get('product/{id}', 'show');
+    Route::get('product/delete/{id}', 'delete');
+});
 
 // User page
 Route::controller(UserController::class)->group(function() {
     Route::get('user', 'index')->name('users');
     Route::get('user/fetchData', 'fetchData');
     Route::post('user/postUser', 'postUser');
+
     Route::get('user/delete/{id}', 'delete');
     Route::get('user/{id}', 'show');
     Route::get('user/status/{id}','setStatus')->name('setStatus');

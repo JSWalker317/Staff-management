@@ -1,19 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Throwable;
 use App\Http\Requests\AddCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
 use App\Exports\CustomersExport;
 use App\Imports\CustomersImport;
-
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
+
+
 
 class CustomerController extends Controller
 {
-   
+    protected $csv;
+
+    function __construct(Csv $csv){
+        $this->csv = $csv;
+    }
+       
     public function index()
     {
         $customers = Customer::orderBy('updated_at', 'DESC')->paginate(10);
@@ -57,33 +65,70 @@ class CustomerController extends Controller
         return $customers;
     }
     // 
+    function setInputEncoding($file) {
+        $fileContent = file_get_contents($file->path());
+        $enc = mb_detect_encoding($fileContent, mb_list_encodings(), true);
+        // dd($enc);
+        Config::set('excel.imports.csv.input_encoding', $enc);
+    }
+    // 
     public function import(Request $request) 
     {
         // Excel::import(new CustomersImport, $request->file('file_customer')->store('temp'));
         $import = new CustomersImport();
-        $import->import($request->file('file_customer')->store('temp'));
+        $file = $request->file('file_customer')->store('temp');
+        $import->import($file);
 
-        $errors = [];
-        if($import->failures())
-        {
-            foreach ($import->failures() as $failure) 
-            {
-                $errors[] = [
-                    $failure->row(),
-                    $failure->attribute(),
-                    $failure->errors()
-                ];
-                // $failure->row(); // row that went wrong
-                // $failure->attribute(); // either heading key (if using heading row concern) or column index
-                // $failure->errors(); // Actual error messages from Laravel validator
-                // $failure->values(); // The values of the row that has failed.
-            }
+        // dd($request->file('file_customer'));
+        // dd(pathinfo($request->file('file_customer')));
+        // $this->csv->setInputEncoding('utf-8');
+        $inputs = $request->all();
+        $this->setInputEncoding($inputs['file_customer']);
+        try {
+            $this->csv->load($inputs['file_customer']);
+
+        } catch (Throwable $th){
+            $errors[] = [ 
+                0 => '',
+                1 => 'Lỗi tên định dạng file Excel => CSV comma delimited',
+                2 => [ 0 => '']
+            ];  
             return back()->with('error', $errors);
-
-        }else{
-            return back()->with('success', 'All good!');
         }
-       
+
+        $spreadsheet = $this->csv->load($inputs['file_customer']);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+        $sheetHeader = $sheetData[0];
+        // dd($sheetHeader[0]);
+        $errors = [];
+        
+        if(sizeof($import->failures()) != 0)
+        {
+            if($sheetHeader = null |$sheetHeader[0] != 'Tên khách hàng' | $sheetHeader[1] != 'Email'|
+                $sheetHeader[2] != 'TelNum' | $sheetHeader[3] !='Địa chỉ')
+            {    
+                $errors[] = [ 
+                    0 => '1',
+                    1 => 'Lỗi tên Heading Excel',
+                    2 => [ 0 => '']
+                ];  
+            }
+            else 
+            {
+                foreach ($import->failures() as $failure) 
+                {
+                    $errors[] = [
+                        // $failure
+                        $failure->row(),
+                        $failure->attribute(),
+                        $failure->errors()
+                    ];
+                }
+            }
+          
+            return back()->with('error', $errors);
+        }
+        return back()->with('success', 'All good!');
         
     }
     public function export(Request $request) 
@@ -98,7 +143,7 @@ class CustomerController extends Controller
         }else{
             $customers = $customers->select('customer_name', 'email', 'tel_num', 'address')->take(10)->get();
         }
-        return  Excel::download(new CustomersExport($customers), 'customers.xlsx');
+        return  Excel::download(new CustomersExport($customers), 'customers.csv');
 
         // $response =  array(
         //     'name' => "customers.xlsx",
