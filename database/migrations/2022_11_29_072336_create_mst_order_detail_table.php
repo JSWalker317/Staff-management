@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('order_id', 11)->unsigned();	
 
             $table->integer('detail_line');
-            $table->integer('product_id')->unsigned();
+            $table->string('product_id');
 
             $table->integer('price_buy');
             $table->integer('quantity');

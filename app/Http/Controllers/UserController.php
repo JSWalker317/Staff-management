@@ -16,7 +16,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::where('is_delete', 0)->orderBy('updated_at', 'DESC')->paginate(20);
+        $users = User::where('is_delete', 0)->orderBy('updated_at', 'DESC')->paginate(10);
         return view('pages.user', compact('users'));
         // return view('pages.user');
        

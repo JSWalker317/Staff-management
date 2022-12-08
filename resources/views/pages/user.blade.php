@@ -61,49 +61,12 @@
 
         
     </div>
-<!-- paginate -->
-    <div class="row mt-2 text-center " >
-            <!-- <div class="col-4"></div>
-            <div class="col-4 d-flex justify-content-center">
-                    <button>1</button>
-                    <button>1</button>
-                    <button>1</button>
-                    <button>1</button>
-                    <button>1</button>
-                    <button>1</button>
-            </div>
-            <div class="col-4 d-flex justify-content-end">
-                Hiển thị từ 1 ~ 10 trong tổng số 100 user
-            </div>         -->
-    </div>
-    <!-- {{ $users->links() }} -->
-    {!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
+
 <!-- table -->
-    <div class="mt-2 text-center">
-                <table class="table table-bordered table-striped">
-                    <thead class="bg-danger text-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Họ tên</th>
-                            <th>Email</th>
-                            <th>Nhóm</th>
-                            <th>Trạng thái</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    
-                    <tbody id="bodyTable">
-                   
-                    </tbody>
-                </table>
-
+    <div class="mt-2 text-center" id="user_table">
+        @include('layouts.userlist')
     </div>
-<!-- paginate -->
-    <div class="d-flex justify-content-center">
-        {{ $users->links() }}
-    </div>
-
-
+  
 <!-- Add Edit -->
     <div class="modal fade" id="addEditUser" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -165,13 +128,13 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-3 col-form-label" >Trạng thái</label>
                     <div class="col-sm-9 mt-2">
-                    <div class="form-check">
-                        <input type='hidden' value='0' name='status'>
-                        <input class="form-check-input" type="checkbox" value="1" name="status" id="status">
-                        <label class="form-check-label" for="status">
-                            TRUE
-                        </label>
-                    </div>
+                        <div class="form-check">
+                            <input type='hidden' value='0' name='status'>
+                            <input class="form-check-input" type="checkbox" value="1" name="status" id="status">
+                            <label class="form-check-label" for="status">
+                                TRUE
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -243,11 +206,11 @@
 <!-- Ajax -->
 <script>
     var form_data;
-    function refresh_data()
+    function refresh_data(page)
     {
         // alert(1);
         $.ajax({
-                url: 'http://localhost/user/fetchData?'+form_data,
+                url: 'http://localhost/user/fetchData?'+form_data+'&page='+page,
                 method: "GET",
                 Data: form_data,
                 success:function(respone){
@@ -257,9 +220,7 @@
                     //     // $('#bodyTable').empty().html('khong co');
                     //     $('#bodyTable').html('<div>'+
                     //     'Không có dữ liệu'+'</div>');
-
-              
-                    $('#bodyTable').empty().html(respone);
+                    $('#user_table').empty().html(respone);
 
                     
                 }
@@ -271,6 +232,11 @@
         // setInterval(function(){
         //     refresh_data();
         // }, 100000);
+        $(document).on('click', '.pagination a', function(e){
+            e.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            refresh_data(page);
+        });
         refresh_data();
         // search
         $('#fetchDataForm').on('submit', function (e) {
@@ -432,7 +398,7 @@
                 $.ajax({
                     url: 'http://localhost/user/delete/'+id,
                     method: "GET",
-                    data: id,
+                    // data: id,
                     dataType: "json",
                     success:function(respone){
                         console.log(respone);
@@ -479,7 +445,7 @@
                 $.ajax({
                     url: 'http://localhost/user/status/'+id,
                     method: "GET",
-                    data: id,
+                    // data: id,
                     dataType: "json",
                     success:function(respone){
                         console.log(respone);

@@ -16,7 +16,7 @@
     <body class="container ">
        
         <h3 class="text-center mt-4">Login</h3>
-        <form class="container align-items-center m-4" action="{{ route('getLogin') }}" method="post">
+        <form class="container align-items-center m-4" action="{{ route('login') }}" method="post">
             @csrf
             <div class="input-group margin-bottom-sm">
                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>

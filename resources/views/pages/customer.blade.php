@@ -72,49 +72,11 @@
                 
             </div>
         </form>
-       
-        
     </div>
-    <div class="row mt-2" >
-            <div class="col-4"></div>
-            <div class="col-4 d-flex justify-content-center">
-                {{ $customers->links() }}
-            </div>
-            <div class="col-4 d-flex justify-content-end">
-                <div class="hint-text">Showing <b>{{$customers->count()}}</b> out of <b>{{$customers->total()}}</b> entries</div>
-                <!-- Hiển thị từ 1 ~ 10 trong tổng số 100 user -->
-            </div>        
-            <!-- {!! $customers->appends(Request::all())->links() !!} -->
-            <!-- {!! $customers->appends(['sort' => 'votes'])->links() !!} -->
-
-            <div class="clearfix">
-                
-            </div>
-    </div>
-
+   
     <!-- table -->
-    <div class="mt-2 text-center">
-            <table class="table table-bordered table-striped">
-                <thead class="bg-danger text-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Họ tên</th>
-                        <th>Email</th>
-                        <th>Địa chỉ</th>
-                        <th>Điện thoại</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                
-                <tbody id="customerList">
-                   
-                </tbody>
-            </table>
-                  
-        <div class="d-flex justify-content-center">
-            {{ $customers->links() }}
-        </div>
-
+    <div class="mt-2 text-center" id="customer_table">
+        @include('layouts.customerlist')
     </div>
   
     <!-- {!! $customers->withQueryString()->links('pagination::bootstrap-5') !!} -->
@@ -219,16 +181,16 @@
     // ajax run link not reload page
     // jqclick
     var form_data ;
-    function refresh_data()
+    function refresh_data(page)
     {
         // alert(1);
         $.ajax({
-            url: 'http://localhost/customer/fetchData?'+form_data,
+            url: 'http://localhost/customer/fetchData?'+form_data+'&page='+page,
             method: "GET",
-            Data: form_data,
+            // data: form_data,
             success:function(respone){
                 //  console.log(form_data);
-                $('#customerList').empty().html(respone);  
+                $('#customer_table').empty().html(respone);  
             }
         })
     }
@@ -257,6 +219,11 @@
         //         }
         //     })
         // }, 5000);
+        $(document).on('click', '.pagination a', function(e){
+            e.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            refresh_data(page);
+        });
         refresh_data();
         $('#fetchDataForm').on('submit', function (e) {
             e.preventDefault();
@@ -309,7 +276,7 @@
             $.ajax({
                 url: 'http://localhost/customer/'+customer_id,
                 method: "GET",
-                data: customer_id,
+                // data: customer_id,
                 dataType: "json",
                 success:function(response){
                     // console.log(respone);

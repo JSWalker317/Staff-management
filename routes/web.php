@@ -48,6 +48,7 @@ Route::controller(ProductController::class)->group(function() {
     Route::get('product/fetchData', 'fetchData');
     Route::get('product/getViewPost', 'getViewPost');
 
+    // Route::post('product/postProduct', 'postProduct');
     Route::post('product/storeProduct', 'storeProduct')->name('storeProduct');
     Route::get('product/{id}', 'show');
     Route::get('product/delete/{id}', 'delete');

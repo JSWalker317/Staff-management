@@ -11,6 +11,7 @@ class Product extends Model
 {
     use HasFactory;
 
+    // public $incrementing = false;
     protected $table = 'mst_product';
     // default id
     protected $primaryKey = 'product_id';

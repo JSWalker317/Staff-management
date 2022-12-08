@@ -113,32 +113,8 @@ class AuthController extends Controller
             //     'status' => 204,
             // ]);
             request()->session()->flush();
-            return redirect()->route('getLogin');
+            return redirect()->route('login');
             // return redirect('/login');
-    }
-    
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
-    {
-        // Auth::logout();
-        // $request->session()->invalidate();
-        // $request->session()->regenerateToken();
-        // return response('', 204);
     }
   
 }

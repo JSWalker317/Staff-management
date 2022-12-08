@@ -16,13 +16,15 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
-        $productCoverPhotos = [null];
-        for ($i = 1; $i < 11; $i++) {
-            $productCoverPhotos[] = 'product' . $i;
-        }
+        // $productCoverPhotos = [null];
+        // for ($i = 1; $i < 11; $i++) {
+        //     $productCoverPhotos[] = 'product' . $i;
+        // }
+        $name = fake()->name();
         return [
-            'product_name' => fake()->name(),
-            'product_image' => fake()->randomElement($productCoverPhotos),
+            'product_id' => substr($name,0,1) . rand(100000000, 999999999),
+            'product_name' => $name,
+            // 'product_image' => fake()->randomElement($productCoverPhotos),
             'product_price' => $this->faker->randomFloat(2, 29, 79),
             'is_sales' => fake()->numberBetween(0,1),
             'description' => $this->faker->sentence($this->faker->biasedNumberBetween(4, 8)),

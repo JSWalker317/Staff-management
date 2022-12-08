@@ -32,7 +32,7 @@
               <li><a class="dropdown-item" href="#">{{ Auth::user()->name }}</a></li>
               <li><a class="dropdown-item" href="{{route('logout') }}">Đăng xuất</a> @csrf</li>
             @else
-              <li><a class="dropdown-item" href="{{route('getLogin') }}">Đăng nhập</a> @csrf</li>
+              <li><a class="dropdown-item" href="{{route('login') }}">Đăng nhập</a> @csrf</li>
             @endif
           </ul>
         </li>
