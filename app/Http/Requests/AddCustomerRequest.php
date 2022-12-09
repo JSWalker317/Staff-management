@@ -27,7 +27,7 @@ class AddCustomerRequest extends FormRequest
             'customer_name'=> 'required|string|min:5',
             // 'email' => 'required|email|unique:mst_customer,email' . request()->customer_id,
             'email' => 'required|email|unique:mst_customer,email,'.request()->customer_id.',customer_id',
-            'tel_num' => 'required|regex:/(0)[0-9]{9}/',
+            'tel_num' => 'required|max:11|regex:/(0)[0-9]{9}/',
             'address' =>'required',
             // 'is_active' => 'required|string',
         ];
@@ -49,7 +49,8 @@ class AddCustomerRequest extends FormRequest
 
             'tel_num.required' => 'Vui lòng nhập số điện thoại',
             // 'tel_num.numeric' => 'Vui lòng nhập sô',
-            'tel_num.regex' => 'Vui lòng nhập ít nhất 9 số và số 0 ở đầu',
+            'tel_num.regex' => 'Vui lòng nhập ít nhất 10 số và số 0 ở đầu',
+            'tel_num.max' => 'Vui lòng nhập không quá 11 số',
 
             'address.required' => 'Vui lòng nhập địa chỉ',
         ];

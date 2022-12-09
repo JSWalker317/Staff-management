@@ -62,7 +62,7 @@ class CustomersImport implements ToCollection
             // Above is alias for as it always validates in batches
             'Tên khách hàng'=> 'required|string|min:5',
             'Email' => 'required|email|unique:mst_customer,email',
-            'TelNum' => 'required|regex:/(0)[0-9]{9}/',
+            'TelNum' => 'required|max:11|regex:/(0)[0-9]{9}/',
             'Địa chỉ' =>'required',
         ];
     }
@@ -82,6 +82,7 @@ class CustomersImport implements ToCollection
 
             'TelNum.required' => 'Vui lòng nhập số điện thoại',
             'TelNum.regex' => 'Vui lòng nhập ít nhất 9 số và số 0 ở đầu',
+            'TelNum.max' => 'Vui lòng nhập không quá 11 số',
 
             'Địa chỉ.required' => 'Vui lòng nhập địa chỉ',
         ];
