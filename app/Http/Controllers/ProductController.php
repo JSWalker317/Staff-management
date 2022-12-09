@@ -122,7 +122,7 @@ class ProductController extends Controller
                 $product = new Product();
                 $subStr = substr($request->product_name,0,1);
                 $newid = substr(Product::select('product_id')
-                                        ->where('product_name', 'like', 'M' . '%' )
+                                        ->where('product_name', 'like', $subStr.'%' )
                                         ->max('product_id'),1,9) + 1;
                 // dd($newid);
                 $product->product_id = $subStr.$newid;
