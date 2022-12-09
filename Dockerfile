@@ -31,7 +31,10 @@ RUN apt-get install -y \
         libzip-dev \
         zip \
   && docker-php-ext-install zip
-RUN docker-php-ext-enable zip
+RUN docker-php-ext-enable zip\gd\do_mysql
+RUN docker-php-ext-enable gd
+RUN docker-php-ext-enable do_mysql
+
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

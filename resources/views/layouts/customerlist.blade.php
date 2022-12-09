@@ -1,4 +1,4 @@
-<div class="row mt-2" >
+<!-- <div class="row mt-2" >
     <div class="col-4"></div>
     <div class="col-4 d-flex justify-content-center">
         {{ $customers->links() }}
@@ -6,8 +6,11 @@
     <div class="col-4 d-flex justify-content-end">
         <div class="hint-text">Showing <b>{{$customers->count()}}</b> out of <b>{{$customers->total()}}</b> entries</div>
     </div>        
-</div>
+</div> -->
+{!! $customers->withQueryString()->links('pagination::bootstrap-5') !!}
+
 @if ($customers->count() > 0) 
+<div class="table-responsive">
     <table class="table table-bordered table-striped">
         <thead class="bg-danger text-light">
             <tr>
@@ -36,6 +39,7 @@
                 @endforeach
         </tbody>
     </table>
+</div>
 @else
     <b class="text-center">Oops! Không có dữ liệu !</b>
 @endif       

@@ -72,12 +72,15 @@
                 
             </div>
         </form>
+
+        <!-- table -->
+        <div class="mt-2 text-center" id="customer_table">
+            @include('layouts.customerlist')
+        </div>
+
     </div>
    
-    <!-- table -->
-    <div class="mt-2 text-center" id="customer_table">
-        @include('layouts.customerlist')
-    </div>
+    
   
     <!-- {!! $customers->withQueryString()->links('pagination::bootstrap-5') !!} -->
 

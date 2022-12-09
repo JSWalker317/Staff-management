@@ -1,6 +1,7 @@
 
 {!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
 @if ($users->count() > 0) 
+<div class="table-responsive">
     <table class="table table-bordered table-striped">
         <thead class="bg-danger text-light">
             <tr>
@@ -35,6 +36,7 @@
                 @endforeach       
         </tbody>
     </table>
+</div>
 @else
     <b class="text-center">Oops! Không có dữ liệu !</b>
 @endif

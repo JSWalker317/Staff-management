@@ -59,13 +59,13 @@
             </div>
         </form>
 
-        
+         <!-- table -->
+        <div class="mt-2 text-center" id="user_table">
+            @include('layouts.userlist')
+        </div>
     </div>
 
-<!-- table -->
-    <div class="mt-2 text-center" id="user_table">
-        @include('layouts.userlist')
-    </div>
+   
   
 <!-- Add Edit -->
     <div class="modal fade" id="addEditUser" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
