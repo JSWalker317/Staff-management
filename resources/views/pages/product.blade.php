@@ -14,7 +14,7 @@
                 <div class="col-md-6 row">
                         <div class="col-md-6">
                             <label for="inputName" class="form-label">Tên</label>
-                            <input type="text" class="form-control" name="product_name" placeholder="Nhập họ tên">
+                            <input type="text" class="form-control" name="product_name" placeholder="Nhập tên sản phẩm">
                         </div>
                         <div class="col-md-6">
                             <label for="inputStatus" class="form-label">Trạng thái</label>
@@ -121,7 +121,7 @@
                 data: {form_data : form_data},
                 success:function(respone){
                     // console.log(respone);
-                    console.log(form_data);
+                    // console.log(form_data);
                     $('#product_table').empty().html(respone);  
                 }
             })
@@ -137,7 +137,7 @@
             $('#fetchDataForm').on('submit', function (e) {
                 e.preventDefault();
                 form_data = $(this).serialize();
-                console.log(form_data);
+                // console.log(form_data);
 
                 refresh_data();
             });

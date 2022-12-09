@@ -10,8 +10,8 @@ use App\Models\OrderDetail;
 class Product extends Model
 {
     use HasFactory;
-
-    // public $incrementing = false;
+    // becuz primary is string if dafault true, the value id is 0 for string
+    public $incrementing = false;
     protected $table = 'mst_product';
     // default id
     protected $primaryKey = 'product_id';

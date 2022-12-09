@@ -121,9 +121,10 @@ class ProductController extends Controller
             if(request()->button_action == 'insert') {
                 $product = new Product();
                 $subStr = substr($request->product_name,0,1);
-                $newid = substr(Product::where('product_name', 'like', $subStr . '%' )
-                ->latest(),1,9) + 1;
-                dd($newid);
+                $newid = substr(Product::select('product_id')
+                                        ->where('product_name', 'like', 'M' . '%' )
+                                        ->max('product_id'),1,9) + 1;
+                // dd($newid);
                 $product->product_id = $subStr.$newid;
                 $product->product_name = $request->product_name;
                 $product->product_price = $request->product_price;

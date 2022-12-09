@@ -52,7 +52,7 @@ class ProductRequest extends FormRequest
             'file_photo.max' => 'Hình ảnh dung lượng < 2Mb',
             'file_photo.mimes' => 'Vui lòng chọn file jpeg,jpg,png',
             'file_photo.image' => 'Vui lòng chọn file hình',
-            'file_photo.dimensions' => 'Hình ảnh kích thước phải lớn hơn 100 và bé hơn 1024',
+            'file_photo.dimensions' => 'Hình ảnh kích thước dài rộng phải lớn hơn 100 và bé hơn 1024',
         ];
     }
 
