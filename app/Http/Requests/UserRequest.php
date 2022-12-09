@@ -26,10 +26,11 @@ class UserRequest extends FormRequest
         return [
             'name'=> 'required|string|min:5',
             'email' => 'required|email|unique:mst_users,email,'.request()->id.',id',
-            'password' => 'required|string|confirmed',
-            'password_confirmation' =>'required',
+            'password' => 'required|string|confirmed| min:5| regex:/^.*(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).*$/',
+            'password_confirmation' =>'required| same:password',
             'group_role' => 'required|string',
             // 'is_active' => 'required|string',
+          
         ];
     }
 
@@ -48,8 +49,13 @@ class UserRequest extends FormRequest
             'email.email' => 'Vui lòng nhập đúng định dạng Email',
 
             'password.required' => 'Vui lòng nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải lớn hơn 5 ký tự',
+            'password.regex' => 'Mật khẩu phải gồm chữ hoa, thường, số',
+
             'password.confirmed' => 'Xác thực mật khẩu không đúng',
             'password_confirmation.required' => 'Vui lòng xác thực mật khẩu',
+            'password_confirmation.same' => 'Xác thực mật khẩu không đúng',
+
         ];
     }
 
