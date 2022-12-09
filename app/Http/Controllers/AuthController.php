@@ -24,7 +24,7 @@ class AuthController extends Controller
     {
         return User::all();
     }
-// register errorr Table 'laravel.user' doesn't exist
+// register 
     public function register(RegisterRequest $request){
         $user = new User();
         $user->name = $request->get('name');
@@ -41,7 +41,26 @@ class AuthController extends Controller
         ];
         return response($response, 201);
     }
-
+     // test api login
+     public function login(Request $request)
+     {
+         $credentials = $request->validate([
+             'email' => ['required', 'email'],
+             'password' => ['required'],
+         ]);
+ 
+         if (Auth::attempt($credentials)) {
+             $user = User::where("email", $request->email)->first();
+             $user->access_token = $user->createToken("myAppToken")->plainTextToken;
+             $response = [
+                 'user' => $user,
+             ];
+             return response($response, 201);
+         }
+         return response()->json('Login failed: Invalid username or password.', 422);
+       
+     }
+ 
     public function getLogin()
     {
         if (Auth::check()) {
@@ -53,26 +72,7 @@ class AuthController extends Controller
 
     }
 
-    // test api login
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $user = User::where("email", $request->email)->first();
-            $user->access_token = $user->createToken("myAppToken")->plainTextToken;
-            $response = [
-                'user' => $user,
-            ];
-            return response($response, 201);
-        }
-        return response()->json('Login failed: Invalid username or password.', 422);
-      
-    }
-
+   
     public function postLogin(LoginRequest $request)
     {
         $login = [
@@ -99,7 +99,7 @@ class AuthController extends Controller
                                                  'message' => 'Login successfully']);
         }
         return redirect()->back()->with(['flag'=>'danger',
-                                            'message' => 'Login failed: Invalid username or password']);
+                                            'message' => 'Login failed: Password không đúng']);
         // return response()->json('Login failed: Invalid username or password.', 422);
       
     }

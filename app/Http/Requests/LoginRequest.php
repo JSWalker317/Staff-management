@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
+            'email' => 'required|email| exists:mst_users',
             'password' => 'required|string',
         ];
     }
@@ -38,6 +38,7 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'Vui lòng nhập email',
             'email.email' => 'Vui lòng nhập đúng định dạng email',
+            'email.exists' => 'Email chưa đăng kí',
             'password.required' => 'Vui lòng nhập password'
         ];
     }
