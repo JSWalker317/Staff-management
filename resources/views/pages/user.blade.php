@@ -46,11 +46,11 @@
                 
             </div>
             <div class="row mt-2">
-                <div class="col-sm-3 ">
+                <div class="col-sm-3 mb-2">
                     <button type="button" class="btn btn-primary add_btn" data-toggle="modal" data-target="#addEditUser"><span class="fa fa-user-plus" aria-hidden="true"></span> Thêm mới</button>
                 </div>
             
-                <div class=" col-sm-9 d-flex justify-content-md-end ">
+                <div class=" col-sm-9 mb-2 d-flex justify-content-md-end ">
                     <button type="submit" class="btn btn-primary mr-3"><span class="fa fa-search" aria-hidden="true"></span> Tìm kiếm</button>
                     <button type="button" id="cancelSearch" class="btn btn-danger"><span class="fa fa-times" aria-hidden="true"></span> Xóa tìm</button>
                
@@ -205,14 +205,21 @@
     </div>
 <!-- Ajax -->
 <script>
+ 
+    // $.ajaxSetup({
+    //     headers: {
+    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //     }
+    // });
     var form_data;
     function refresh_data(page)
     {
         // alert(1);
         $.ajax({
-                url: 'http://localhost/user/fetchData?'+form_data+'&page='+page,
+                // url: 'http://localhost/user/fetchData?'+form_data+'&page='+page,
+                url: "{{ route('user.fetchData') }}"+'?'+form_data+'&page='+page,
                 method: "GET",
-                Data: form_data,
+                data: {},
                 success:function(respone){
                     //  console.log(form_data);
                     // console.log(respone.type);
@@ -289,13 +296,12 @@
             $('#error_pass').html('');
             $('#error_pass_confirm').html('');  
 
+            var url = '{{ route("user.show",":id")}}'
+            url = url.replace(':id', id);
             $.ajax({
                 type: "GET",
-                url: 
-                "http://localhost/user/"+id
-                ,
+                url: url,
                 data: {
-                    
                 },
                 success: function (response) {
                     // console.log(response);
@@ -316,9 +322,12 @@
         $('#user_form').on('submit', function (e) {
             e.preventDefault();
             var form_data = $(this).serialize();
+            var token = '{{csrf_token()}}';
+            console.log(token);
 
             $.ajax({
-                url: 'http://localhost/user/postUser',
+                url: "{{ route('user.postUser') }}",
+                // headers: {'X-CSRF-TOKEN': token},
                 method: "POST",
                 data: form_data,
                 dataType: "json",
@@ -393,10 +402,12 @@
             console.log(id);
             $('.userName').html(name);
             // $('#userId').val(id);
+            var url = '{{ route("user.delete",":id")}}'
+            url = url.replace(':id', id);
             $('#delete_form').on('submit', function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: 'http://localhost/user/delete/'+id,
+                    url: url,
                     method: "GET",
                     // data: id,
                     dataType: "json",
@@ -439,11 +450,12 @@
             $('.lock').html(status);
 
             // $('#userId').val(id);
-
+            var url = '{{ route("user.setStatus",":id")}}'
+            url = url.replace(':id', id);
             $('#status_form').on('submit', function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: 'http://localhost/user/status/'+id,
+                    url: url,
                     method: "GET",
                     // data: id,
                     dataType: "json",
@@ -461,8 +473,6 @@
                 
                 })
             });
-          
-
         });
      // 
 

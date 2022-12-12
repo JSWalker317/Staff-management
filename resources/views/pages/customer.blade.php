@@ -163,7 +163,7 @@
                     </button>
                 </div>
                 <!-- file submit nen multipart/form-data -->
-                <form action="{{ route('import') }}" id="importExportForm" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('customer.import') }}" id="importExportForm" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="modal-body">
@@ -172,7 +172,7 @@
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Import Data</button>
-                        <!-- <a href="{{ route('export') }}" class="btn btn-warning" id="exportData">Export Data</a> -->
+                        <!-- <a href="{{ route('customer.export') }}" class="btn btn-warning" id="exportData">Export Data</a> -->
                     </div>
                    
                 </form>
@@ -188,7 +188,7 @@
     {
         // alert(1);
         $.ajax({
-            url: 'http://localhost/customer/fetchData?'+form_data+'&page='+page,
+            url: "{{ route('customer.fetchData') }}"+'?'+form_data+'&page='+page,
             method: "GET",
             // data: form_data,
             success:function(respone){
@@ -275,9 +275,11 @@
             $('#error_email').html('');
             $('#error_tel_num').html('');
             $('#error_address').html('');
+            var url = '{{ route("customer.show",":id")}}'
+            url = url.replace(':id', customer_id);
 
             $.ajax({
-                url: 'http://localhost/customer/'+customer_id,
+                url: url,
                 method: "GET",
                 // data: customer_id,
                 dataType: "json",
@@ -305,7 +307,7 @@
             var form_data_add = $(this).serialize();
 
             $.ajax({
-                url: 'http://localhost/customer/postCustomer',
+                url: "{{ route('customer.postCustomer') }}",
                 method: "POST",
                 data: form_data_add,
                 dataType: "json",
@@ -374,7 +376,8 @@
             e.preventDefault();
             console.log('ddd');
             console.log(form_data);
-            var url =  'http://localhost/customer/export?'+form_data;
+           
+            var url =   "{{ route('customer.export') }}"+'?'+form_data;
             window.open(url, '_blank');
         });
 

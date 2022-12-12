@@ -25,42 +25,53 @@ Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 // Product page
-Route::controller(ProductController::class)->group(function() {
-    Route::get('product', 'index')->name('products');
+Route::controller(ProductController::class)
+->prefix('product')
+->as('product.')
+->group(function() {
+    Route::get('/', 'index')->name('products');
     // Route::get('/', 'index')->name('products');
-    Route::get('product/fetchData', 'fetchData');
-    Route::get('product/getViewPost', 'getViewPost');
+    Route::get('/fetchData', 'fetchData')->name('fetchData');
+    Route::get('/getViewPost', 'getViewPost')->name('getViewPost');
     // Route::post('product/postProduct', 'postProduct');
-    Route::post('product/storeProduct', 'storeProduct')->name('storeProduct');
-    Route::get('product/{id}', 'show');
-    Route::get('product/delete/{id}', 'delete');
+    Route::post('/storeProduct', 'storeProduct')->name('store');
+    Route::get('/{id}', 'show')->name('show');
+    Route::get('/delete/{id}', 'delete')->name('delete');
+});
+
+ // Customer page
+ Route::controller(CustomerController::class)
+->prefix('customer')
+->as('customer.')
+ ->group(function() {
+    Route::get('/', 'index')->name('customers');
+    Route::get('/fetchData', 'fetchData')->name('fetchData');
+    Route::get('/export', 'export')->name('export');
+
+    Route::post('/postCustomer', 'postCustomer')->name('postCustomer');
+    Route::post('/import','import')->name('import');
+    Route::get('/{customer_id}', 'show')->name('show');
+});
+
+// User page
+Route::controller(UserController::class)
+->prefix('user')
+->as('user.')
+->group(function() {
+    Route::get('/', 'index')->name('users');
+    Route::get('/fetchData', 'fetchData')->name('fetchData');
+    Route::post('/postUser', 'postUser')->name('postUser');
+
+    Route::get('/delete/{id}', 'delete')->name('delete');
+    Route::get('/{id}', 'show')->name('show');
+    Route::get('/status/{id}','setStatus')->name('setStatus');
 });
 
 // private
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    // Customer page
-    Route::controller(CustomerController::class)->group(function() {
-        Route::get('customer', 'index')->name('customers');
-        Route::get('customer/fetchData', 'fetchData');
-        Route::get('customer/export', 'export')->name('export');
-
-        Route::post('customer/postCustomer', 'postCustomer');
-        Route::post('/import','import')->name('import');
-        Route::get('customer/{customer_id}', 'show');
-    });
-
-    // User page
-    Route::controller(UserController::class)->group(function() {
-        Route::get('user', 'index')->name('users');
-        Route::get('user/fetchData', 'fetchData');
-        Route::post('user/postUser', 'postUser');
-
-        Route::get('user/delete/{id}', 'delete');
-        Route::get('user/{id}', 'show');
-        Route::get('user/status/{id}','setStatus')->name('setStatus');
-    });
+   
 
     // Route::get('/product', [ProductController::class, 'index'])->name('products');
     // Route::get('/customer', [CustomerController::class, 'index'])->name('customers');

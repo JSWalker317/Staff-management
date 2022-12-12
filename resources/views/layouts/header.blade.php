@@ -8,13 +8,13 @@
       <div class="collapse navbar-collapse  " id="navbarNav">
         <ul class="navbar-nav ">
             <li class="nav-item">
-              <a class="nav-link {{ request()->is('product')? 'active' : '' }}" href="{{route('products') }}">Sản phẩm</a>
+              <a class="nav-link {{ request()->is('product')? 'active' : '' }}" href="{{route('product.products') }}">Sản phẩm</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{ request()->is('customer')? 'active' : '' }}" href="{{route('customers') }}">Khách hàng</a>
+              <a class="nav-link {{ request()->is('customer')? 'active' : '' }}" href="{{route('customer.customers') }}">Khách hàng</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{ request()->is('user')? 'active' : '' }}" href="{{route('users') }}">Users</a>
+              <a class="nav-link {{ request()->is('user')? 'active' : '' }}" href="{{route('user.users') }}">Users</a>
             </li>
         </ul>
       </div>

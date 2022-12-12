@@ -42,11 +42,11 @@
                 
             </div>
             <div class="row mt-2">
-                <div class="col-sm-3 ">
+                <div class=" col-sm-3 mb-2">
                     <button type="button" name='add' id="add_product" class="btn btn-primary"><span class="fa fa-user-plus" aria-hidden="true"></span> Thêm mới</button>
                 </div>
             
-                <div class=" col-sm-9 d-flex justify-content-md-end ">
+                <div class=" col-sm-9 mb-2 d-flex justify-content-md-end ">
                     <button type="submit" class="btn btn-primary mr-3"><span class="fa fa-search" aria-hidden="true"></span> Tìm kiếm</button>
                     <button type="button" id="cancelSearch" class="btn btn-danger"><span class="fa fa-times" aria-hidden="true"></span> Xóa tìm</button>
                
@@ -111,12 +111,14 @@
 
     <script>
         // ajax run link not reload page
+        // env('IP_PUBLIC')
+        
         var form_data ;
         function refresh_data(page)
         {
             // alert(1);
             $.ajax({
-                url: 'http://localhost/product/fetchData?'+form_data+'&page='+page,
+                url: "{{ route('product.fetchData') }}"+'?'+form_data+'&page='+page,
                 method: "GET",
                 data: {form_data : form_data},
                 success:function(respone){
@@ -159,10 +161,12 @@
                 console.log(id);
                 $('.productName').html(name);
                 // $('#userId').val(id);
+                var url = '{{ route("product.delete",":id")}}'
+                url = url.replace(':id', id);
                 $('#delete_form').on('submit', function (e) {
                     e.preventDefault();
                     $.ajax({
-                        url: 'http://localhost/product/delete/'+id,
+                        url: url,
                         method: "GET",
                         data: {id: id},
                         dataType: "json",
@@ -194,7 +198,7 @@
 
                 // console.log(action);
                 $.ajax({
-                    url: 'http://localhost/product/getViewPost',
+                    url: "{{ route('product.getViewPost')}}",
                     method: "GET",
                     data: {
                         action: action,
@@ -219,7 +223,7 @@
 
                 // console.log(action);
                 $.ajax({
-                    url: 'http://localhost/product/getViewPost',
+                    url: "{{ route('product.getViewPost')}}",
                     method: "GET",
                     data: {
                         action: action,

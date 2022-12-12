@@ -81,7 +81,7 @@
     <div class="modal-footer">
         <!-- <input class="form-control" name="photo" type="file" id="photo"> -->
         <input type="hidden" name="button_action" id="button_action" value= "{{$data['action']}}">
-        <a type="button" href="{{ route('products') }}" class="btn btn-danger" data-dismiss="modal">Hủy</a>
+        <a type="button" href="{{ route('product.products') }}" class="btn btn-danger" data-dismiss="modal">Hủy</a>
         <input type="submit" name="submit" id="action" value="Lưu" class="btn btn-primary">
     </div>
 </form>
@@ -105,8 +105,11 @@
             // console.log(id);
             if(id != ''){
                 $('#id').val(id);
+                var url = '{{ route("product.show",":id")}}'
+                url = url.replace(':id', id);
+
                 $.ajax({
-                    url: 'http://localhost/product/'+id,
+                    url: url,
                     method: "GET",
                     data: {id: id},
                     success:function(respone){
@@ -141,12 +144,12 @@
             var form = $('form')[0]; // You need to use standard javascript object here
             var formData = new FormData(form);
             
-            console.log(formData);
+            // console.log(formData);
             // ajax get file phai co encryptype mutilpart
             //After this it will send ajax request like you submit 
             //regular form with enctype="multipart/form-data"
             $.ajax({
-                url: 'http://localhost/product/storeProduct',
+                url: "{{ route('product.store') }}",
                 _token: "{{ csrf_token() }}" ,
                 data: formData,
                 type: 'POST',
@@ -198,8 +201,6 @@
 
                 }
             })
-        });
-
-       
+        });       
     });
 </script>
