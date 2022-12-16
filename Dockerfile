@@ -10,6 +10,7 @@ WORKDIR /var/www
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
+    libzip-dev\
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     locales \
@@ -19,24 +20,18 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl
-RUN apt-get update
-RUN apt-get install -y libzip-dev
-RUN docker-php-ext-install zip
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
-RUN docker-php-ext-install pdo_mysql
-#  mbstring zip exif pcntl
-# RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
-RUN docker-php-ext-install gd
-RUN apt-get install -y \
-        libzip-dev \
-        zip \
-  && docker-php-ext-install zip
-RUN docker-php-ext-enable zip
+RUN docker-php-ext-configure gd 
+RUN docker-php-ext-install pdo_mysql 
+RUN docker-php-ext-install zip 
+RUN docker-php-ext-install gd 
+
+RUN docker-php-ext-enable zip 
 RUN docker-php-ext-enable gd
-# RUN docker-php-ext-enable do_mysql
+RUN docker-php-ext-enable pdo_mysql 
 
 
 # Install composer
@@ -50,6 +45,8 @@ COPY . /var/www
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
+
+RUN composer install
 
 # Change current user to www
 USER www
