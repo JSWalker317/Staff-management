@@ -8,6 +8,7 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - docker-compose exec app php artisan key:generate
 - docker-compose exec app php artisan config:cache
 - docker-compose exec app php artisan migrate:fresh --seed
+- docker-compose exec app php artisan storage:link
 
 
 ##
