@@ -147,14 +147,15 @@ class ProductController extends Controller
                 $product->product_price = $request->product_price;
                 $product->description = $request->description;
                 $product->is_sales = $request->is_sales;
-                
+                // check first
+                if($request->showPhoto == ''){
+                    $product->product_image = '';
+                }
+                // check second
                 if($request->file('file_photo') != null){
                     $fileName = time().$request->file('file_photo')->getClientOriginalName();
                     $path = $request->file('file_photo')->storeAs('images', $fileName, 'public');
                     $product->product_image = "/storage/$path";
-                } else{
-
-                    $product->product_image = '';
                 }
                 
                 $product->save();

@@ -56,7 +56,7 @@
         <div class="col-md">
             <label for="" class="row-form-label">Hình ảnh</label>
             <div class=" row m-4">
-                <img id="showPhoto"  style="height: 200px;" alt="Hình sản phẩm">
+                <img id="showPhoto" name="showPhoto"  style="height: 200px;" alt="Hình sản phẩm">
                 <span class="text-danger" id="error_image"></span>
 
             </div>
@@ -72,7 +72,7 @@
                     <input id="removeFile" class="btn btn-danger" type="button" value="Xóa file">
                 </div>
                 <div class="col-lg-6 mt-2">
-                    <input class='label label-info' id="upload-file-info" readonly>
+                    <input class='label label-info' name="upload-file-info" id="upload-file-info" readonly>
                 </div>
             </div>
         </div>
@@ -121,6 +121,8 @@
                             $('#description').val(value['description']);
                             $('#is_sales').val(value['is_sales']);     
                             $('#showPhoto').attr('src', value['product_image']); 
+                            // $('#file_photo').val('');
+                            // $('#upload-file-info').val('');
                         });
                     }
                 })
@@ -134,6 +136,8 @@
             $('#file_photo').val('');
             $('#upload-file-info').val('');
             $('#showPhoto').attr('src', '');
+
+            // console.log($('#showPhoto').attr('src'));
 
         });
 
