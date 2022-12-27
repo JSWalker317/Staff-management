@@ -16,7 +16,7 @@
         <tbody id="bodyTable">    
                 @foreach($users as $key => $value)
                     <tr>
-                        <th class="id">{{$value['id']}}</th>
+                        <th class="id" style="vertical-align: middle;">{{$value['id']}}</th>
                         <td class="name">{{$value['name']}}</td>
                         <td>{{$value['email']}}</td>
                         <td>{{$value['group_role']}}</td>

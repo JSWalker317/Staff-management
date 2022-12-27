@@ -54,7 +54,7 @@ class CustomerController extends Controller
     public function filterSearch($customers, $customer_name, $email, $is_active, $address) 
     {
         // address
-        $customers = $address!= null ? $customers->where('address','like', $address . '%') : $customers;
+        $customers = $address!= null ? $customers->where('address','like','%'. $address . '%') : $customers;
         // is_active
         $customers = $is_active!=null ? $customers->where('is_active', $is_active) : $customers;
         // Name
@@ -137,7 +137,7 @@ class CustomerController extends Controller
 
         $customers = $this->filterSearch($customers, $request->customer_name,
         $request->email, $request->is_active, $request->address);
-        if( $request = null)
+        if( $request != null)
         {
             $customers = $customers->select('customer_name', 'email', 'tel_num', 'address')->get();
         }else{

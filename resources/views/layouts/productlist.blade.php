@@ -17,7 +17,7 @@
             <tbody id="productList">
                 @foreach($products as $key => $value)
                     <tr>
-                        <th class="product_id">{{$value['product_id']}}</th>
+                        <th class="product_id" style="vertical-align: middle;">{{$value['product_id']}}</th>
                         <td class="preview">{{$value['product_name']}}
                             <img src="{{ asset($value['product_image']) }}" 
                             style="display: none; z-index: 100; position: absolute;"
