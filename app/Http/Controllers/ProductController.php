@@ -144,7 +144,22 @@ class ProductController extends Controller
                 // return redirect('/product')->with($success_add);
             }
             if(request()->button_action == 'update') {
-                $product = Product::findOrFail(request()->id);
+                if(substr(request()->id,0,1) != substr($request->product_name,0,1)){
+
+                    $old_product = Product::findOrFail(request()->id);
+
+                    $product = new Product();
+                    $subStr = substr($request->product_name,0,1);
+                    $newid = substr(Product::select('product_id')
+                                            ->where('product_name', 'like', $subStr.'%' )
+                                            ->max('product_id'),1,9) + 1;
+                    $product->product_id = $subStr.$newid;
+                    $product->product_image = $old_product->product_image;
+                    $old_product->delete();
+                    
+                }else{
+                    $product = Product::findOrFail(request()->id);
+                }
                 $product->product_name = $request->product_name;
                 $product->product_price = $request->product_price;
                 $product->description = $request->description;
