@@ -50,6 +50,8 @@ RUN chmod -R 777 /var/www/storage
 
 RUN composer install
 
+RUN composer install
+
 # Change current user to www
 
 USER www

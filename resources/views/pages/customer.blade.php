@@ -11,9 +11,9 @@
         @endforeach
     @endif
 
-    <!-- @if ($errors->has('email'))
+    {{-- <!-- @if ($errors->has('email'))
         <span class="text-danger"> {{ $errors->first('email') }}</span>
-    @endif -->
+    @endif --> --}}
 
     @if($message = Session::get('success'))
         <div class="alert alert-success message-alert" role="alert">

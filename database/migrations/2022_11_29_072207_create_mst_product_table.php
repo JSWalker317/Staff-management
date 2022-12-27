@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('product_image',255)->nullable();
             $table->decimal('product_price')->default(0);
             $table->tinyInteger('is_sales')->default(1)->comment('0 : Dừng bán hoặc dừng sản xuất  , 1: Có hàng bán');
-            $table->string('description')->comment('0: Bình thường , 1 : Đã xóa')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
