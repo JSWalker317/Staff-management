@@ -104,7 +104,7 @@ class CustomerController extends Controller
         
         if(sizeof($import->failures()) != 0)
         {
-            if($sheetHeader = null |$sheetHeader[0] != 'Tên khách hàng' | $sheetHeader[1] != 'Email'|
+            if($sheetHeader == null |$sheetHeader[0] != 'Tên khách hàng' | $sheetHeader[1] != 'Email'|
                 $sheetHeader[2] != 'TelNum' | $sheetHeader[3] !='Địa chỉ')
             {    
                 $errors[] = [ 
@@ -137,7 +137,10 @@ class CustomerController extends Controller
 
         $customers = $this->filterSearch($customers, $request->customer_name,
         $request->email, $request->is_active, $request->address);
-        if( $request != null)
+        if( $request->customer_name != null |
+            $request->email != null |
+            $request->is_active != null |
+            $request->address  != null)
         {
             $customers = $customers->select('customer_name', 'email', 'tel_num', 'address')->get();
         }else{
