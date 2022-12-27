@@ -58,7 +58,7 @@
             <div class=" row m-4">
                 <img id="showPhoto" name="showPhoto"  style="height: 200px;" alt="Hình sản phẩm">
                 <span class="text-danger" id="error_image"></span>
-
+                <input type="hidden" name="img_del" id="img_del" value="0">
             </div>
             <div class="row">
                 <div class="col-lg-3">
@@ -102,6 +102,7 @@
     function get_detail()
         {
             var id = "<?php echo $data['id']; ?>";
+
             // console.log(id);
             if(id != ''){
                 $('#id').val(id);
@@ -115,11 +116,11 @@
                     success:function(respone){
                         console.log(respone);
                         $.each(respone, function (key, value){
-                            // console.log(value['product_name']);
+                            console.log(value['product_image']);
                             $('#product_name').val(value['product_name']);
                             $('#product_price').val(value['product_price']);
                             $('#description').val(value['description']);
-                            $('#is_sales').val(value['is_sales']);     
+                            $('#is_sales').val(value['is_sales']);
                             $('#showPhoto').attr('src', value['product_image']); 
                             // $('#file_photo').val('');
                             // $('#upload-file-info').val('');
@@ -132,7 +133,7 @@
         get_detail();
         $('#removeFile').on('click', function() {    
             // console.log('ddd');
-                      
+            $('#img_del').val('1');
             $('#file_photo').val('');
             $('#upload-file-info').val('');
             $('#showPhoto').attr('src', '');
@@ -148,7 +149,7 @@
             var form = $('form')[0]; // You need to use standard javascript object here
             var formData = new FormData(form);
             
-            // console.log(formData);
+            console.log(formData);
             // ajax get file phai co encryptype mutilpart
             //After this it will send ajax request like you submit 
             //regular form with enctype="multipart/form-data"

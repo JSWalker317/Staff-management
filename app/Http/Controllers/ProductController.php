@@ -112,6 +112,8 @@ class ProductController extends Controller
     public function storeProduct(ProductRequest $request){
         $error_arr = [];
         $success_add = '';
+        // dd($request->showPhoto);
+
         //  dd($request->file('file_photo'));
         if (isset($request->validator) && $request->validator->fails()) {
             $error_arr[] = $request->validator->errors()->messages() ;
@@ -148,7 +150,9 @@ class ProductController extends Controller
                 $product->description = $request->description;
                 $product->is_sales = $request->is_sales;
                 // check first
-                if($request->showPhoto == ''){
+                // dd($request->all());
+
+                if($request->img_del == '1'){
                     $product->product_image = '';
                 }
                 // check second
@@ -157,7 +161,7 @@ class ProductController extends Controller
                     $path = $request->file('file_photo')->storeAs('images', $fileName, 'public');
                     $product->product_image = "/storage/$path";
                 }
-                
+ 
                 $product->save();
 
                 $success_add =  'Update added';
