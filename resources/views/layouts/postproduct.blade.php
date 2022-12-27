@@ -88,6 +88,15 @@
 
 <script>
     function readURL(input) {
+        var img_size = Math.round(input.files[0].size*100/(1024*1024))/100;
+        console.log(img_size);
+        if (img_size > 2){
+            alert('Hình ảnh kích thước không quá 2MB');
+            $('#file_photo').val('');
+            $('#upload-file-info').val('');
+            $('#showPhoto').attr('src', '');
+        }
+
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
@@ -149,7 +158,7 @@
             var form = $('form')[0]; // You need to use standard javascript object here
             var formData = new FormData(form);
             
-            console.log(formData);
+            // console.log(formData);
             // ajax get file phai co encryptype mutilpart
             //After this it will send ajax request like you submit 
             //regular form with enctype="multipart/form-data"
